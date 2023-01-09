@@ -25,8 +25,8 @@ class ViewController: UIViewController {
         let view = UITableView()
         view.bounces = false
         view.backgroundColor = .lightGray
-        // 1.
-//        view.isScrollEnabled = false
+        // 핵심
+        view.isScrollEnabled = false
         return view
     }()
     
@@ -72,17 +72,29 @@ extension ViewController: UITableViewDataSource {
     }
 }
 
+//extension ViewController: UITableViewDelegate {
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        print(scrollView.contentOffset.y)
+//
+//        let topMargin = 56.0 // 상단 56.0 마진
+//        let topSpacing = emptyView.bounds.height - topMargin
+//
+//        if scrollView == self.scrollView {
+//            // 상단 뷰의 height만큼 스크롤 한 경우, tableView의 스크롤 on
+//            let shouldOnScroll = topSpacing - scrollView.contentOffset.y < 0
+//            tableView.isScrollEnabled = shouldOnScroll
+//
+//            print(scrollView.contentOffset.y, scrollView.contentSize.height - scrollView.frame.size.height)
+//        }
+//    }
+//}
+
 extension ViewController: UITableViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
-        
-        let topMargin = 56.0 // 상단 56.0 마진
-        let topSpacing = emptyView.bounds.height - topMargin
-        
         if scrollView == self.scrollView {
-            // 상단 뷰의 height만큼 스크롤 한 경우, tableView의 스크롤 on
-            let shouldOnScroll = topSpacing - scrollView.contentOffset.y < 0
-            tableView.isScrollEnabled = shouldOnScroll
+            let remainingScrollHeight = scrollView.contentSize.height - scrollView.frame.size.height
+            let isBottomReached = scrollView.contentOffset.y >= remainingScrollHeight
+            tableView.isScrollEnabled = isBottomReached
         }
     }
 }
